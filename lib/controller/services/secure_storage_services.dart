@@ -1,7 +1,7 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class SecureStorage {
-  static FlutterSecureStorage secureStorage = FlutterSecureStorage();
+  static FlutterSecureStorage secureStorage = const FlutterSecureStorage();
 
 //Function to write a value into secure storage
   static Future writeSecureStorage(String key, String value) async {

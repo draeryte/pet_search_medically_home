@@ -1,53 +1,73 @@
 import 'package:flutter/material.dart';
-import 'package:pet_search_medically_home/controller/services/networking.dart';
+import 'package:pet_search_medically_home/controller/services/token_api.dart';
 import 'package:pet_search_medically_home/controller/services/secure_storage_services.dart';
+import 'package:pet_search_medically_home/model/animal.dart';
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
+  const MyHomePage({Key? key}) : super(key: key);
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
+  String searchByOption = '';
+  TextEditingController searchField = TextEditingController();
+  bool searchEnabled = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: const Text('Pet Search'),
       ),
-      body: Center(
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
         child: Column(
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+          children: [
+            DropdownButton<String>(
+              hint: const Text('Please select a search option'),
+              value: searchByOption,
+              icon: const Icon(Icons.arrow_drop_down_outlined),
+              iconSize: 24,
+              elevation: 16,
+              style: const TextStyle(color: Colors.deepPurple),
+              underline: Container(
+                height: 2,
+                color: Colors.deepPurpleAccent,
+              ),
+              onTap: () async {
+                String? token =
+                    await SecureStorage.secureStorage.read(key: "accessToken");
+                if (token != null) {
+                } else {
+                  getAccessToken();
+                }
+              },
+              onChanged: (String? newValue) {
+                setState(() {
+                  searchByOption = newValue!;
+                  searchEnabled = true;
+                });
+              },
+              items: <String>['', 'Type', 'Color', 'Gender', 'Breed']
+                  .map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
+            searchEnabled
+                ? TextField(
+                    controller: searchField,
+                  )
+                : Container(),
+            searchEnabled
+                ? OutlinedButton(onPressed: () {}, child: const Text('Search'))
+                : Container(),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          var data = await getAccessToken();
-        },
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

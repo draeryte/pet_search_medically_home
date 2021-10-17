@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
+import 'package:flutter_dotenv/flutter_dotenv.dart' as dotEnv;
 import 'views/home.dart';
 
 void main() async {
-  await DotEnv.dotenv.load(fileName: ".env");
+  await dotEnv.dotenv.load(fileName: ".env");
   runApp(const MyApp());
 }
 
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.red,
       ),
-      home: const MyHomePage(title: 'Home Search Page'),
+      home: const MyHomePage(),
     );
   }
 }

@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:pet_search_medically_home/constants.dart';
+import 'package:pet_search_medically_home/controller/services/secure_storage_services.dart';
 
 Future getAccessToken() async {
   Map<String, String> header = {
@@ -17,13 +18,15 @@ Future getAccessToken() async {
   };
 
   try {
-    var res = await http.post(Uri.parse(url!), body: body, headers: header);
+    var res = await http.post(Uri.parse(url! + "/oauth2/token"),
+        body: body, headers: header);
 
     if (res.statusCode == 200) {
       var jsonData = json.decode(res.body);
-      String token = jsonData['access_token'];
+      SecureStorage.secureStorage
+          .write(key: "accessToken", value: jsonData['access_token']);
 
-      return token;
+      return res.statusCode;
     } else {
       return res.statusCode;
     }
