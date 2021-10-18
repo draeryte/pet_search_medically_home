@@ -5,6 +5,7 @@ class FavoritesModel extends ChangeNotifier {
   final List<Animal> _favList = [];
 
   int get listLength => _favList.length;
+  List get getFavList => _favList;
 
   void addAnimal(Animal animal) {
     if (_favList.contains(animal) == true) {
@@ -21,6 +22,7 @@ class FavoritesModel extends ChangeNotifier {
 
   void removeAllAnimals() {
     _favList.clear();
+    notifyListeners();
   }
 
   List<Animal> exposeList() {

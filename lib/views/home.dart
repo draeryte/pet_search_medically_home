@@ -6,9 +6,11 @@ import 'package:pet_search_medically_home/controller/services/secure_storage_ser
 import 'package:pet_search_medically_home/controller/services/token_api.dart';
 //import 'package:pet_search_medically_home/controller/services/secure_storage_services.dart';
 import 'package:pet_search_medically_home/model/animal.dart';
+import 'package:pet_search_medically_home/model/favorite.dart';
 
 import 'package:pet_search_medically_home/views/favorites_screen.dart';
 import 'package:pet_search_medically_home/views/pet_details_screen.dart';
+import 'package:provider/provider.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
@@ -149,17 +151,19 @@ class GoToFav extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextButton(
-        onPressed: () {
-          Navigator.push(
-              context,
-              (MaterialPageRoute(
-                  builder: (context) => const FavoriteScreen())));
-        },
-        child: const Text(
-          'Favorites',
-          style: TextStyle(color: Colors.white),
-        ));
+    return Consumer<FavoritesModel>(builder: (context, value, child) {
+      return TextButton(
+          onPressed: () {
+            Navigator.push(
+                context,
+                (MaterialPageRoute(
+                    builder: (context) => const FavoriteScreen())));
+          },
+          child: Text(
+            '${value.listLength} Favs',
+            style: const TextStyle(color: Colors.white),
+          ));
+    });
   }
 }
 
