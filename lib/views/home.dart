@@ -1,12 +1,13 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+//import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:pet_search_medically_home/controller/services/search_animals_api.dart';
-import 'package:pet_search_medically_home/controller/services/token_api.dart';
 import 'package:pet_search_medically_home/controller/services/secure_storage_services.dart';
+import 'package:pet_search_medically_home/controller/services/token_api.dart';
+//import 'package:pet_search_medically_home/controller/services/secure_storage_services.dart';
 import 'package:pet_search_medically_home/model/animal.dart';
-import 'package:pet_search_medically_home/views/components/appbar_of_app.dart';
+
+import 'package:pet_search_medically_home/views/favorites_screen.dart';
 import 'package:pet_search_medically_home/views/pet_details_screen.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -26,7 +27,11 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBar,
+      appBar: AppBar(
+        title: const Text('Pet Search'),
+        centerTitle: false,
+        actions: [GoToFav()],
+      ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -43,15 +48,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 color: Colors.deepPurpleAccent,
               ),
               onTap: () async {
-                // String? token =
-                //     await SecureStorage.secureStorage.read(key: "accessToken");
-                // if (token != null && JwtDecoder.isExpired(token) != true) {
-                // } else if (JwtDecoder.isExpired(token!) == true) {
-                getAccessToken();
-                //   setState(() {
-                //     searchField.clear();
-                //   });
-                // }
+                String? token =
+                    await SecureStorage.secureStorage.read(key: 'accessToken');
+                if (token != null && JwtDecoder.isExpired(token) != true) {
+                } else if (JwtDecoder.isExpired(token!) == true ||
+                    token == '') {
+                  await SecureStorage.secureStorage.deleteAll();
+                  getAccessToken();
+                }
               },
               onChanged: (String? newValue) {
                 setState(() {
@@ -68,8 +72,9 @@ class _MyHomePageState extends State<MyHomePage> {
               }).toList(),
             ),
             searchEnabled
-                ? TextField(
-                    controller: searchField,
+                ? CustomTextField(
+                    searchField: searchField,
+                    lebelText: 'Search Pets',
                   )
                 : Container(),
             searchEnabled
@@ -115,9 +120,13 @@ class _MyHomePageState extends State<MyHomePage> {
                                 title: Text(snapshot.data[index].name),
                                 subtitle:
                                     Text(snapshot.data[index].description),
-                                leading: Container(
-                                    child: Image.network(
-                                        snapshot.data[index].photoLink)),
+                                leading: Image.network(
+                                    snapshot.data[index].photoLink,
+                                    height:
+                                        MediaQuery.of(context).size.height * .1,
+                                    width:
+                                        MediaQuery.of(context).size.width * .2,
+                                    fit: BoxFit.cover),
                               );
                             });
                       } else {
@@ -127,6 +136,53 @@ class _MyHomePageState extends State<MyHomePage> {
                   ))
                 : Container()
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class GoToFav extends StatelessWidget {
+  const GoToFav({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+        onPressed: () {
+          Navigator.push(
+              context,
+              (MaterialPageRoute(
+                  builder: (context) => const FavoriteScreen())));
+        },
+        child: const Text(
+          'Favorites',
+          style: TextStyle(color: Colors.white),
+        ));
+  }
+}
+
+class CustomTextField extends StatelessWidget {
+  const CustomTextField({
+    Key? key,
+    required this.searchField,
+    required this.lebelText,
+  }) : super(key: key);
+
+  final TextEditingController searchField;
+  final String lebelText;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      controller: searchField,
+      decoration: const InputDecoration(
+        labelText: 'Search pets',
+        focusedBorder:
+            OutlineInputBorder(borderSide: BorderSide(color: Colors.blue)),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.blueAccent),
         ),
       ),
     );
