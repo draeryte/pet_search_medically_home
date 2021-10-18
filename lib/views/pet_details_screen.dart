@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pet_search_medically_home/controller/services/share.dart';
 import 'package:pet_search_medically_home/model/animal.dart';
 import 'package:pet_search_medically_home/model/favorite.dart';
-import 'package:pet_search_medically_home/views/components/appbar_of_app.dart';
+
 import 'package:pet_search_medically_home/views/home.dart';
 import 'package:provider/provider.dart';
 
@@ -56,17 +56,19 @@ class _PetDetailScreenState extends State<PetDetailScreen> {
                 ),
                 Container(
                     width: MediaQuery.of(context).size.width * .28,
-                    child: OutlinedButton(
-                        onPressed: () {
-                          context
-                              .read<FavoritesModel>()
-                              .addAnimal(widget.animalSelected);
-
-                          setState(() {
-                            saved == true ? saved = false : saved = true;
-                          });
-                        },
-                        child: Text(saved ? 'Unsave' : 'Save')))
+                    child: Consumer<FavoritesModel>(
+                        builder: (context, value, child) {
+                      return OutlinedButton(
+                          onPressed: () {
+                            context
+                                .read<FavoritesModel>()
+                                .addAnimal(widget.animalSelected);
+                          },
+                          child: Text(
+                              value.checkIfAnimalSaved(widget.animalSelected)
+                                  ? 'Unsave'
+                                  : 'Save'));
+                    }))
               ],
             ),
             Container(

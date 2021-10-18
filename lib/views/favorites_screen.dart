@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pet_search_medically_home/model/animal.dart';
 import 'package:pet_search_medically_home/model/favorite.dart';
-import 'package:pet_search_medically_home/views/components/appbar_of_app.dart';
+
+import 'package:pet_search_medically_home/views/pet_details_screen.dart';
 import 'package:provider/provider.dart';
 
 class FavoriteScreen extends StatefulWidget {
@@ -14,7 +15,7 @@ class FavoriteScreen extends StatefulWidget {
 class _FavoriteScreenState extends State<FavoriteScreen> {
   @override
   Widget build(BuildContext context) {
-    List<Animal> favAnimals = context.watch<FavoritesModel>().exposeList();
+    List<Animal> favAnimals = context.watch<FavoritesModel>().getFavList;
 
     return Scaffold(
       appBar: AppBar(
@@ -35,52 +36,35 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
       body: ListView.builder(
           itemCount: favAnimals.length,
           itemBuilder: (context, int index) {
-            return ListTile(
-              title: Text(favAnimals[index].name!),
-              subtitle: Text(favAnimals[index].description!),
-              leading: Image.network(favAnimals[index].photoLink!,
-                  height: MediaQuery.of(context).size.height * .1,
-                  width: MediaQuery.of(context).size.width * .2,
-                  fit: BoxFit.cover),
+            return GestureDetector(
+              onTap: () {
+                Animal animalSelected = Animal(
+                    id: favAnimals[index].id,
+                    animalType: favAnimals[index].animalType,
+                    breed: favAnimals[index].breed,
+                    color: favAnimals[index].color,
+                    gender: favAnimals[index].gender,
+                    photoLink: favAnimals[index].photoLink,
+                    url: favAnimals[index].url,
+                    name: favAnimals[index].name,
+                    description: favAnimals[index].description);
+
+                Navigator.push(
+                    context,
+                    (MaterialPageRoute(
+                        builder: (context) =>
+                            PetDetailScreen(animalSelected: animalSelected))));
+              },
+              child: ListTile(
+                title: Text(favAnimals[index].name!),
+                subtitle: Text(favAnimals[index].description!),
+                leading: Image.network(favAnimals[index].photoLink!,
+                    height: MediaQuery.of(context).size.height * .1,
+                    width: MediaQuery.of(context).size.width * .2,
+                    fit: BoxFit.cover),
+              ),
             );
           }),
     );
   }
 }
-// class FavoriteScreen extends StatelessWidget {
-//   const FavoriteScreen({Key? key}) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     List<Animal> favAnimals = context.watch<FavoritesModel>().exposeList();
-
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: const Text('Pet Search'),
-//         centerTitle: false,
-//         actions: [
-//           TextButton(
-//               onPressed: () {
-//                 context.read<FavoritesModel>().removeAllAnimals();
-//               },
-//               child: const Text(
-//                 'Delete All',
-//                 style: TextStyle(color: Colors.white),
-//               ))
-//         ],
-//       ),
-//       body: ListView.builder(
-//           itemCount: favAnimals.length,
-//           itemBuilder: (context, int index) {
-//             return ListTile(
-//               title: Text(favAnimals[index].name!),
-//               subtitle: Text(favAnimals[index].description!),
-//               leading: Image.network(favAnimals[index].photoLink!,
-//                   height: MediaQuery.of(context).size.height * .1,
-//                   width: MediaQuery.of(context).size.width * .2,
-//                   fit: BoxFit.cover),
-//             );
-//           }),
-//     );
-//   }
-// }

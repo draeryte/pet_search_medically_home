@@ -5,13 +5,10 @@ class FavoritesModel extends ChangeNotifier {
   final List<Animal> _favList = [];
 
   int get listLength => _favList.length;
-  List get getFavList => _favList;
+  List<Animal> get getFavList => _favList;
 
   void addAnimal(Animal animal) {
-    if (_favList.contains(animal) == true) {
-    } else {
-      _favList.add(animal);
-    }
+    checkIfAnimalSaved(animal) ? removeAnimal(animal) : _favList.add(animal);
     notifyListeners();
   }
 
@@ -25,7 +22,11 @@ class FavoritesModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  List<Animal> exposeList() {
-    return _favList;
+  bool checkIfAnimalSaved(Animal animal) {
+    if (_favList.any((element) => element.id == animal.id) == true) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
