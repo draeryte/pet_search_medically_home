@@ -49,6 +49,25 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
+
+    flavorDimensions "app"
+
+    productFlavors {
+
+        dev {
+            dimension "app"
+            applicationId "dev.flutterexplained.pet_search_medically_home.dev"
+            versionCode 1
+            versionName "1.0"
+        }
+
+        production {
+            dimension "app"
+            applicationId "dev.flutterexplained.pet_search_medically_home.production"
+            versionCode 1
+            versionName "1.0"
+        }
+    }
     
     buildTypes {
         release {

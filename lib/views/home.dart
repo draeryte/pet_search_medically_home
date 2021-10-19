@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'package:pet_search_medically_home/flavor_config.dart';
+import 'package:provider/provider.dart';
 import 'package:pet_search_medically_home/controller/services/token_api.dart';
 
 import 'package:pet_search_medically_home/views/components/custom_text_field.dart';
@@ -18,7 +19,9 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    getAccessToken();
+
+    getAccessToken(context.read<FlavorConfig>().apiKey,
+        context.read<FlavorConfig>().apiSecret);
   }
 
   String searchByOption = 'type';

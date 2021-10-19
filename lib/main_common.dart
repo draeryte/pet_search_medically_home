@@ -1,13 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart' as dotEnv;
+import 'package:pet_search_medically_home/constants.dart';
+import 'package:pet_search_medically_home/flavor_config.dart';
 import 'package:pet_search_medically_home/model/favorite.dart';
 import 'package:provider/provider.dart';
 import 'views/home.dart';
 
-void main() async {
+var FlavorConfigProvider;
+
+void mainCommon(FlavorConfig configuration) async {
   await dotEnv.dotenv.load(fileName: ".env");
-  runApp(ChangeNotifierProvider(
-      create: (context) => FavoritesModel(), child: const MyApp()));
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (context) => FavoritesModel()),
+    ChangeNotifierProvider(
+        create: (context) => FlavorConfig(
+            appTitle: configuration.appTitle,
+            apiEndpoint: configuration.apiEndpoint,
+            apiKey: configuration.apiKey,
+            apiSecret: configuration.apiSecret)),
+  ], child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {

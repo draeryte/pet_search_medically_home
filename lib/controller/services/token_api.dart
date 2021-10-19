@@ -6,15 +6,15 @@ import 'package:http/http.dart' as http;
 import 'package:pet_search_medically_home/constants.dart';
 import 'package:pet_search_medically_home/controller/services/secure_storage_services.dart';
 
-Future getAccessToken() async {
+Future getAccessToken(String apiKey, String clientSecret) async {
   Map<String, String> header = {
     "Content-Type": "application/x-www-form-urlencoded"
   };
 
   Map<String, String> body = {
     "grant_type": "client_credentials",
-    "client_id": apiKey!,
-    "client_secret": secret!
+    "client_id": apiKey,
+    "client_secret": clientSecret
   };
 
   try {
