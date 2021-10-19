@@ -30,6 +30,7 @@ class ResultsList extends StatelessWidget {
             return ListView.builder(
                 itemCount: snapshot.data.length,
                 itemBuilder: (BuildContext context, int index) {
+                  List<Animal> animals = snapshot.data;
                   return ListTile(
                     onTap: () {
                       Animal animalSelected = Animal(

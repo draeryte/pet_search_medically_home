@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pet_search_medically_home/model/animal.dart';
 import 'package:pet_search_medically_home/model/favorite.dart';
+import 'package:pet_search_medically_home/views/components/animal_list_tile.dart';
 
 import 'package:pet_search_medically_home/views/pet_details_screen.dart';
 import 'package:provider/provider.dart';
@@ -55,14 +56,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                         builder: (context) =>
                             PetDetailScreen(animalSelected: animalSelected))));
               },
-              child: ListTile(
-                title: Text(favAnimals[index].name!),
-                subtitle: Text(favAnimals[index].description!),
-                leading: Image.network(favAnimals[index].photoLink!,
-                    height: MediaQuery.of(context).size.height * .1,
-                    width: MediaQuery.of(context).size.width * .2,
-                    fit: BoxFit.cover),
-              ),
+              child: AnimalListTile(favAnimals: favAnimals, index: index),
             );
           }),
     );

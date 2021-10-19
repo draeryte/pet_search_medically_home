@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 //import 'dart:io';
@@ -10,11 +11,14 @@ import 'package:pet_search_medically_home/model/animal.dart';
 
 Future getAnimalsBy(String searchOption, String searchTerm) async {
   String? token = await SecureStorage.secureStorage.read(key: "accessToken");
+  String timeOutMessag = "Connection timed out";
   Map<String, String> header = {"Authorization": "Bearer $token"};
   try {
-    var res = await http.get(
-        Uri.parse(url! + "/animals?$searchOption=$searchTerm"),
-        headers: header);
+    final res = await http
+        .get(Uri.parse(url! + "/animals?$searchOption=$searchTerm"),
+            headers: header)
+        .timeout(const Duration(seconds: 5));
+
     if (res.statusCode == 200) {
       var response = json.decode(res.body);
       var creatures = response['animals'];
@@ -23,6 +27,8 @@ Future getAnimalsBy(String searchOption, String searchTerm) async {
     } else {
       return <Animal>[];
     }
+  } on TimeoutException catch (e) {
+    return timeOutMessag;
   } catch (e) {
     log(e.toString());
     return null;
