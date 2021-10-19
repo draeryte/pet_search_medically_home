@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:http/http.dart' as http;
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 import 'package:pet_search_medically_home/constants.dart';
 import 'package:pet_search_medically_home/controller/services/secure_storage_services.dart';
 
@@ -13,8 +13,8 @@ Future getAccessToken() async {
 
   Map<String, String> body = {
     "grant_type": "client_credentials",
-    "client_id": dotenv.env['API_KEY']!,
-    "client_secret": dotenv.env['CLIENT_SECRET']!
+    "client_id": apiKey!,
+    "client_secret": secret!
   };
 
   try {

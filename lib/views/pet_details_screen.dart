@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pet_search_medically_home/controller/services/share.dart';
 import 'package:pet_search_medically_home/model/animal.dart';
 import 'package:pet_search_medically_home/model/favorite.dart';
+import 'package:pet_search_medically_home/views/components/go_to_fav_button.dart';
 
 import 'package:pet_search_medically_home/views/home.dart';
 import 'package:provider/provider.dart';
@@ -71,21 +72,41 @@ class _PetDetailScreenState extends State<PetDetailScreen> {
                     }))
               ],
             ),
-            Container(
-              color: Colors.black26,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Text(widget.animalSelected.name!),
-                  Text(widget.animalSelected.breed!),
-                  Text(widget.animalSelected.gender!),
-                ],
-              ),
+            DetailTile(
+              fieldTitle: widget.animalSelected.name!,
+              icon: Icons.badge,
+            ),
+            DetailTile(
+              fieldTitle: widget.animalSelected.breed!,
+              icon: Icons.pets_sharp,
+            ),
+            DetailTile(
+              fieldTitle: widget.animalSelected.gender!,
+              icon: Icons.transgender,
+            ),
+            const SizedBox(
+              height: 20,
             ),
             Text(widget.animalSelected.description!),
           ],
         ),
       ),
+    );
+  }
+}
+
+class DetailTile extends StatelessWidget {
+  const DetailTile({Key? key, required this.fieldTitle, required this.icon})
+      : super(key: key);
+
+  final String fieldTitle;
+  final IconData icon;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: Icon(icon),
+      title: Text(fieldTitle),
     );
   }
 }
