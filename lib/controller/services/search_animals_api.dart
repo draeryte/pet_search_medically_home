@@ -28,6 +28,7 @@ Future getAnimalsBy(String searchOption, String searchTerm) async {
       return <Animal>[];
     }
   } on TimeoutException catch (e) {
+    log(e.toString());
     return timeOutMessag;
   } catch (e) {
     log(e.toString());

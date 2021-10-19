@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart' as dotEnv;
-import 'package:pet_search_medically_home/constants.dart';
+
 import 'package:pet_search_medically_home/flavor_config.dart';
 import 'package:pet_search_medically_home/model/favorite.dart';
 import 'package:provider/provider.dart';
 import 'views/home.dart';
 
-var FlavorConfigProvider;
-
 void mainCommon(FlavorConfig configuration) async {
-  await dotEnv.dotenv.load(fileName: ".env");
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (context) => FavoritesModel()),
     ChangeNotifierProvider(
