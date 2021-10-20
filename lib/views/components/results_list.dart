@@ -20,24 +20,52 @@ class ResultsList extends StatelessWidget {
         child: FutureBuilder(
       future: getAnimalsBy(searchByOption, searchField.text),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (snapshot.hasData) {
-          if (snapshot.data.length == 0) {
-            return Center(
-              child: Text('No Results Found \n \nTry Another Search Term',
-                  textAlign: TextAlign.center, style: infoMessageBold),
-            );
-          } else {
-            return ListView.builder(
-                itemCount: snapshot.data.length,
-                itemBuilder: (BuildContext context, int index) {
-                  List<Animal> animals = snapshot.data;
-                  return AnimalListTile(favAnimals: animals, index: index);
-                });
-          }
-        } else {
-          return const Center(child: CircularProgressIndicator());
+        switch (snapshot.connectionState) {
+          case ConnectionState.none:
+            return const ErrorMessageToUser(
+                errorMessage: "Error! \n Try checking internet connection");
+          case ConnectionState.waiting:
+            return const Center(child: CircularProgressIndicator());
+
+          default:
+            if (snapshot.data == 1) {
+              return const ErrorMessageToUser(
+                errorMessage: 'Connection timed out. Try again later',
+              );
+            } else if (snapshot.data == 2) {
+              return const ErrorMessageToUser(
+                errorMessage: 'Could not reach server. Try again later',
+              );
+            } else if (snapshot.data.length != 0) {
+              return ListView.builder(
+                  itemCount: snapshot.data.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    List<Animal> animals = snapshot.data;
+                    return AnimalListTile(favAnimals: animals, index: index);
+                  });
+            } else {
+              return const ErrorMessageToUser(
+                errorMessage: 'No Results Found \n \nTry Another Search Term',
+              );
+            }
         }
       },
     ));
+  }
+}
+
+class ErrorMessageToUser extends StatelessWidget {
+  final String errorMessage;
+  const ErrorMessageToUser({
+    required this.errorMessage,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(errorMessage,
+          textAlign: TextAlign.center, style: infoMessageBold),
+    );
   }
 }

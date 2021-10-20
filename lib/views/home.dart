@@ -69,6 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             const SizedBox(height: 10),
             CustomTextField(
+              key: const Key('Search Field'),
               searchField: searchField,
               labelText: 'Type search here',
             ),
