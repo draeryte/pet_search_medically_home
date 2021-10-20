@@ -12,13 +12,16 @@ class MockHttp extends Mock implements http.BaseClient {}
 
 void main() {
   test('Given when a user tries to get a token', () async {
-    Uri url = Uri.parse("https://api.petfinder.com/v2/oauth2/token");
+    await dotenv.load(fileName: ".env");
+
+    Uri url = Uri.parse(dotenv.env['API_URL']!);
     final MockHttp client = MockHttp();
 
     when(MockHttp().post(url)).thenAnswer((invocation) => Future.value(
         http.Response('{"access_token": "siubekfbeodncbece"}', 200)));
 
-    getAccessToken("API_KEY", "CLIENT_SECRET", client);
+    getAccessToken(
+        dotenv.env['API_KEY']!, dotenv.env['CLIENT_SECRET']!, client);
     expectLater(SecureStorage.secureStorage.read(key: "accessToken"),
         "siubekfbeodncbece");
   });

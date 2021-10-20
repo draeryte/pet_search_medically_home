@@ -45,6 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ShapedContainer(
               child: DropdownButtonHideUnderline(
                 child: DropdownButton<String>(
+                  key: const Key("Drop Down Button"),
                   hint: const Text('Search by'),
                   value: searchByOption,
                   icon: const Icon(Icons.arrow_drop_down_outlined),
@@ -78,6 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             ShapedContainer(
               child: TextButton(
+                  key: const Key("Search Button"),
                   onPressed: () async {
                     setState(() {
                       showResults = true;
@@ -88,6 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
             showWidget(
                 showResults,
                 ResultsList(
+                  key: const Key("Pet List Home"),
                   searchByOption: searchByOption,
                   searchField: searchField,
                 )),

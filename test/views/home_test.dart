@@ -6,16 +6,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:pet_search_medically_home/flavor_config.dart';
 import 'package:pet_search_medically_home/model/favorite.dart';
+import 'package:pet_search_medically_home/views/components/results_list.dart';
 import 'package:pet_search_medically_home/views/home.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  String searchByOption = 'type';
-  TextEditingController searchField = TextEditingController();
-  bool searchEnabled = false;
-  bool showResults = false;
-  List animals = [];
-
   testWidgets('Given when user attempts to search for a pet', (tester) async {
     await dotenv.load(fileName: ".env");
     final qaConfig = FlavorConfig(
@@ -38,11 +33,27 @@ void main() {
           home: MyHomePage(),
         )));
 
-    final dropDown = find.byType(DropdownButton);
-    final textFieldForSearch = find.byKey(const Key("Search Term"));
-    final searchButton = find.byType(TextButton);
+    final textFieldForSearch = find.byKey(const Key("Search Field"));
+    final searchButton = find.byKey(const Key("Search Button"));
 
-    await tester.enterText(textFieldForSearch, "Hey");
+    expect(
+        (tester.widget(find.byKey(const Key("Drop Down Button")))
+                as DropdownButton)
+            .value,
+        equals('type'));
+    await tester.tap(find.text("type"));
+    await tester.pump(const Duration(seconds: 2));
+    await tester.tap(find.text('gender').last);
+    await tester.pump(const Duration(seconds: 2));
+    expect(
+        (tester.widget(find.byKey(const Key("Drop Down Button")))
+                as DropdownButton)
+            .value,
+        equals('gender'));
+    await tester.enterText(textFieldForSearch, "Male");
     await tester.pump();
+    await tester.tap(searchButton);
+    await tester.pump();
+    expect(find.byKey(const Key("Pet List Home")), findsOneWidget);
   });
 }
