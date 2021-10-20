@@ -37,27 +37,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
       body: ListView.builder(
           itemCount: favAnimals.length,
           itemBuilder: (context, int index) {
-            return GestureDetector(
-              onTap: () {
-                Animal animalSelected = Animal(
-                    id: favAnimals[index].id,
-                    animalType: favAnimals[index].animalType,
-                    breed: favAnimals[index].breed,
-                    color: favAnimals[index].color,
-                    gender: favAnimals[index].gender,
-                    photoLink: favAnimals[index].photoLink,
-                    url: favAnimals[index].url,
-                    name: favAnimals[index].name,
-                    description: favAnimals[index].description);
-
-                Navigator.push(
-                    context,
-                    (MaterialPageRoute(
-                        builder: (context) =>
-                            PetDetailScreen(animalSelected: animalSelected))));
-              },
-              child: AnimalListTile(favAnimals: favAnimals, index: index),
-            );
+            return AnimalListTile(favAnimals: favAnimals, index: index);
           }),
     );
   }

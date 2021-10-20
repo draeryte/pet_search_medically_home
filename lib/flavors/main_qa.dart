@@ -6,10 +6,10 @@ import 'package:pet_search_medically_home/main_common.dart';
 void main() async {
   await dotenv.dotenv.load(fileName: ".env");
   final qaConfig = FlavorConfig(
-      apiEndpoint: url!,
+      apiEndpoint: 'some string',
       appTitle: 'Pet Search QA',
       apiKey: dotenv.dotenv.env['API_KEY']!,
-      apiSecret: dotenv.dotenv.env['API_SECRET']!);
+      apiSecret: dotenv.dotenv.env['CLIENT_SECRET']!);
 
   mainCommon(qaConfig);
 }
