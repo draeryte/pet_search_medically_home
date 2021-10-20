@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pet_search_medically_home/flavor_config.dart';
 import 'package:provider/provider.dart';
 import 'package:pet_search_medically_home/controller/services/token_api.dart';
-
+import 'package:http/http.dart' as http;
 import 'package:pet_search_medically_home/views/components/custom_text_field.dart';
 import 'package:pet_search_medically_home/views/components/go_to_fav_button.dart';
 import 'package:pet_search_medically_home/views/components/results_list.dart';
@@ -21,7 +21,7 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
 
     getAccessToken(context.read<FlavorConfig>().apiKey,
-        context.read<FlavorConfig>().apiSecret);
+        context.read<FlavorConfig>().apiSecret, http.Client());
   }
 
   String searchByOption = 'type';

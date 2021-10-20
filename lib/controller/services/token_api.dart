@@ -1,12 +1,11 @@
 import 'dart:convert';
 import 'dart:developer';
-
 import 'package:http/http.dart' as http;
-
 import 'package:pet_search_medically_home/constants.dart';
 import 'package:pet_search_medically_home/controller/services/secure_storage_services.dart';
 
-Future getAccessToken(String apiKey, String clientSecret) async {
+Future getAccessToken(
+    String apiKey, String clientSecret, http.Client client) async {
   Map<String, String> header = {
     "Content-Type": "application/x-www-form-urlencoded"
   };
@@ -18,7 +17,7 @@ Future getAccessToken(String apiKey, String clientSecret) async {
   };
 
   try {
-    var res = await http.post(Uri.parse(url! + "/oauth2/token"),
+    var res = await client.post(Uri.parse(url! + "/oauth2/token"),
         body: body, headers: header);
 
     if (res.statusCode == 200) {
