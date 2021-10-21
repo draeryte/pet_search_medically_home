@@ -1,12 +1,10 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:http/http.dart' as http;
+
 import 'package:pet_search_medically_home/flavor_config.dart';
 import 'package:pet_search_medically_home/model/favorite.dart';
-import 'package:pet_search_medically_home/views/components/results_list.dart';
+
 import 'package:pet_search_medically_home/views/home.dart';
 import 'package:provider/provider.dart';
 
